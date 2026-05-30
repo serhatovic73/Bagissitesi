@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doğuya 100.000 Fidan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #060f0a;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Hero Bölümü */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(6, 15, 10, 0.95)),
+                        url('images/fistik.png') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #9ca3af;
+            margin-bottom: 35px;
+        }
+
+        /* Butonlar */
+        .btn {
+            display: inline-block;
+            background: #22c55e;
+            padding: 16px 32px;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6);
+        }
+
+        /* Genel Sekme Yapısı */
+        .section {
+            padding: 100px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            font-size: 2.25rem;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: #22c55e;
+            border-radius: 2px;
+        }
+
+        /* Sayaç Kartları */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 50px 40px;
+            border-radius: 24px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .counter {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #4ade80;
+            margin-bottom: 10px;
+           
+        }
+
+        .card p {
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        /* İlerleme Çubuğu (Progress Bar) */
+        .progress-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress {
+            height: 20px;
+            background: #1f2937;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+            border-radius: 10px;
+            transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
+        }
+
+        #progressText {
+            font-size: 1.1rem;
+            text-align: center;
+            color: #e5e7eb;
+            font-weight: 600;
+        }
+
+        /* Zaman Tüneli (Timeline) */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 20px 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background: rgba(34, 197, 94, 0.2);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-item {
+            padding: 20px 40px;
+            position: relative;
+            width: 50%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .timeline-item.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #060f0a;
+            border: 4px solid #22c55e;
+            border-radius: 50%;
+            top: 38px;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .left { left: 0; text-align: right; }
+        .right { left: 50%; text-align: left; }
+
+        .left::after { right: -10px; }
+        .right::after { left: -10px; }
+
+        .timeline-item.show::after {
+            background: #22c55e;
+            box-shadow: 0 0 12px #22c55e;
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            display: inline-block;
+            width: 100%;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h3 {
+            color: #4ade80;
+            margin-bottom: 8px;
+            font-size: 1.25rem;
+        }
+
+        .content p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+        }
+
+        /* Galeri */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            filter: grayscale(20%);
+        }
+
+        .gallery img:hover {
+            transform: scale(1.03);
+            filter: grayscale(0%);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+     
+        video:hover{
+            transform: scale(1.03);
+            filter: grayscale(0%);
+        }
+        /* Kripto Bağış Alanı */
+        .glass {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .wallet {
+            background: #020617;
+            padding: 18px;
+            border-radius: 14px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            margin: 25px 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            background: #020617;
+            color: #6b7280;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Animasyonlar & Efektler */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobil Uyum Kriterleri */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .timeline::after { left: 20px; }
+            .timeline-item { width: 100%; padding-left: 50px; padding-right: 10px; text-align: left; }
+            .left, .right { left: 0; }
+            .left::after, .right::after { left: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🌱 Doğuya 10.000 Fidan</h1>
+            <p>Şırnak'tan başlayarak üretken, yeşil ve sürdürülebilir bir gelecek için fıstık fidanları dikmeyi hedefliyoruz.</p>
+            <a href="#bagis" class="btn">Projeye Destek Ol</a>
+        </div>
+    </section>
+
+    <section class="section reveal">
+        <div class="cards">
+            <div class="card"><div class="counter" data-target="10000">0</div><p>Hedef Fidan</p></div>
+            <div class="card"><div class="counter" data-target="9000000">0</div><p>TL Hedefi</p></div>
+            <div class="card"><div class="counter" data-target="1">0</div><p>Başlangıç Bölgesi</p></div>
+        </div>
+    </section>
+
+    <section class="section reveal">
+        <h2>📈 Fon İlerlemesi</h2>
+        <div class="progress-container">
+            <div class="progress">
+                <div class="bar" id="bar"></div>
+            </div>
+            <div id="progressText">0 TL / 0 TL</div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>🗺️ Proje Yol Haritası</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>🌱 Arazi Satın Alma</h3>
+                    <p>Şırnak'ta uygun arazilerin satın alınması.</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>🚜 Arazi Hazırlığı</h3>
+                    <p>Temizlik ve planlama çalışmaları.</p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>💧 Sulama Sistemi</h3>
+                    <p>Su altyapısının kurulması.</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>🌳 Fidan Temini</h3>
+                    <p>Kaliteli fıstık fidanlarının alınması.</p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>🌿 Dikim</h3>
+                    <p>Fidanların araziye ekilmesi.</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>🛡️ Koruma</h3>
+                    <p>Tel çit ve güvenlik sistemleri.</p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>✂️ Bakım</h3>
+                    <p>Budama ve gübreleme süreçleri.</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>💰 İlk Hasat</h3>
+                    <p>İlk gelirlerin elde edilmesi.</p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="content">
+                    <h3>🚀 Büyüme</h3>
+                    <p>Yeni araziler satın alınması.</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="content">
+                    <h3>🌍 Dünya Pazarı</h3>
+                    <p>Uluslararası satışların başlaması.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal">
+        <h2>📸 Hedeflenen Vizyon</h2>
+        <div class="gallery">
+            <img src="https://kemalcucetarim.com/wp-content/uploads/2024/10/Tekin-Antep-Fistigi-Fidani.jpg" alt="Olgunlasmasi">
+            <img src="https://www.pistachosdelsol.com/wp-content/uploads/2016/05/20170909_130958.jpg" alt="Büyümesi">
+            <img src="https://i4.hurimg.com/i/hurriyet/75/1200x675/62fe519b4e3fe028b4379ab9.jpg" alt="Hasat">
+            <img src="https://i.pinimg.com/736x/93/c7/3a/93c73a8d18baf5052c26d071b336ee38.jpg" alt="Islenmesi">
+            <img src="images/fistik.png" alt="Fistik">
+            <img src="images/fistiklarimiz.jpeg" alt="Fistiklarimiz">
+            <img src="images/yeniekilmis.jpeg" alt="yeniekilmis">
+          <video width="400" height="400" autoplay  muted>
+          <source src="images/sulama.mp4" type="video/mp4">
+          
+         </video>
+         <video width="400" height="400" autoplay muted>
+             <source src="images/fistiktedarikmerkezi.mp4" type="video/mp4">
+         </video>
+
+        </div>
+    </section>
+
+    <section class="section reveal" id="bagis">
+        <div class="glass">
+            <h2>💰 USDT (BEP-20) ile Destek</h2>
+            <div class="wallet" id="wallet">0x2EA7Fd177074C7d73cA1cf65F37822346f9E5c5a</div>
+            <button class="btn" id="copyBtn" onclick="copyWallet()">Cüzdanı Kopyala</button>
+        </div>
+    </section>
+    
+
+    <footer>
+        © 2026 Doğuya 100.000 Fidan Projesi. Tüm Hakları Saklıdır.
+    </footer>
+
+    <script>
+        // Cüzdan Kopyalama Fonksiyonu (Geliştirilmiş UX)
+        function copyWallet() {
+            const walletText = document.getElementById('wallet').innerText;
+            const copyBtn = document.getElementById('copyBtn');
+            
+            navigator.clipboard.writeText(walletText).then(() => {
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = 'Kopyalandı! ✓';
+                copyBtn.style.background = '#15803d';
+                
+                setTimeout(() => {
+                    copyBtn.innerText = originalText;
+                    copyBtn.style.background = '#22c55e';
+                }, 2000);
+            });
+        }
+
+        // Sayaç Animasyonu
+        const countObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const el = entry.target;
+                    let target = +el.dataset.target, c = 0;
+                    let step = Math.max(1, target / 50);
+                    let t = setInterval(() => {
+                        c += step;
+                        if(c >= target) { c = target; clearInterval(t); }
+                        el.innerText = Math.floor(c).toLocaleString('tr-TR');
+                    }, 25);
+                    countObs.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        document.querySelectorAll('.counter').forEach(x => countObs.observe(x));
+
+        // Genel Sayfa Kaydırma Efektleri (Reveal)
+        const revealObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if(e.isIntersecting) e.target.classList.add('active');
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(x => revealObs.observe(x));
+
+        // İlerleme Çubuğu ve Metin Yönetimi
+        const targetAmount = 9000000;
+        const collectedAmount = 100000; 
+        const percentage = (collectedAmount / targetAmount) * 100;
+
+        const bar = document.getElementById("bar");
+        if(bar) {
+            setTimeout(() => { bar.style.width = percentage + "%"; }, 500);
+        }
+
+        const progressText = document.getElementById("progressText");
+        if(progressText) {
+            progressText.innerHTML = collectedAmount.toLocaleString('tr-TR') + " TL / " + targetAmount.toLocaleString('tr-TR') + " TL";
+        }
+
+        // Zaman Tüneli Animasyonu
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        const timelineObs = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        timelineItems.forEach(item => timelineObs.observe(item));
+    </script>
+</body>
+</html>
