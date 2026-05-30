@@ -343,12 +343,11 @@
             .left::after, .right::after { left: 10px; }
         }
 
-        .gallery video{
+.gallery video{
     width:100%;
-    max-width:100%;
-    height:auto;
+    height:280px;
+    object-fit:cover;
     border-radius:20px;
-    transition:all .4s ease;
 }
     </style>
 </head>
@@ -456,11 +455,11 @@
             <img src="images/fistik.png" alt="Fistik">
             <img src="images/fistiklarimiz.jpeg" alt="Fistiklarimiz">
             <img src="images/yeniekilmis.jpeg" alt="yeniekilmis">
-          <video  autoplay  muted loop>
+        <video autoplay muted playsinline loop>
           <source src="images/sulama.mp4" type="video/mp4">
           
          </video>
-         <video autoplay muted loop>
+         <video autoplay muted playsinline loop>
              <source src="images/fistiktedarikmerkezi.mp4" type="video/mp4">
          </video>
 
